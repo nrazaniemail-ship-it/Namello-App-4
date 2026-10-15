@@ -1,30 +1,49 @@
 # Namello Backend Deployment
 
-## Production mode: Google OAuth
+## Authentication modes
 
-This source bundle uses Google ID-token verification for backend sessions. It does **not** use Firebase Web Authentication, so the Firebase Web `apiKey` error from a different `index.html` does not originate from this source.
+The backend supports three modes:
 
-Set these environment variables on Render:
+- `firebase`: verifies Firebase ID tokens through Firebase Admin SDK and issues Namello backend sessions. Use this mode with the Firebase sign-in gate in the 1.0.5 integration branch.
+- `google`: verifies Google OAuth ID tokens directly.
+- `local`: development/demo only; forbidden when `NODE_ENV=production`.
+
+## Render: Firebase mode
+
+Set these environment variables on the Render service:
+
+- `NODE_ENV=production`
+- `NAMELLO_AUTH_MODE=firebase`
+- `FIREBASE_PROJECT_ID=namello-app-4`
+- `FIREBASE_SERVICE_ACCOUNT_JSON=<service account JSON stored as a secret environment variable>`
+- `NAMELLO_SESSION_SECRET=<at least 32 random characters>`
+- `CORS_ORIGINS=https://nrazaniemail-ship-it.github.io`
+- `DB_PATH=/var/data/namello.sqlite` only if a persistent disk is mounted at `/var/data`.
+
+Keep the service-account JSON private. Do not paste it into chat, commit it to GitHub, or place it in browser code. The backend checks that the service-account project ID matches `FIREBASE_PROJECT_ID`. If `FIREBASE_SERVICE_ACCOUNT_JSON` is absent, the server attempts Application Default Credentials instead.
+
+The browser Firebase configuration contains the Firebase Web API key, project ID, app ID, auth domain, and messaging sender ID. The Web API key is not a server secret, but it must be the current key associated with the correct Firebase Web app/project. Obtain the configuration again from Firebase Console → Project settings → General → Your apps → SDK setup and configuration. Enable Email/Password and Google providers in Authentication, and add the deployed app's domain to Authorized domains.
+
+## Render: Google OAuth mode
+
+For direct Google OAuth backend verification instead of Firebase, set:
 
 - `NODE_ENV=production`
 - `NAMELLO_AUTH_MODE=google`
-- `GOOGLE_CLIENT_ID=<the same Google OAuth Web Client ID used in Namello settings>`
+- `GOOGLE_CLIENT_ID=<Google OAuth Web Client ID used by Namello settings>`
 - `NAMELLO_SESSION_SECRET=<at least 32 random characters>`
 - `CORS_ORIGINS=https://nrazaniemail-ship-it.github.io`
-- `DB_PATH=/var/data/namello.sqlite` (only if a persistent disk is mounted at `/var/data`; otherwise choose a persistent storage plan/path appropriate to the Render service)
-
-The Google OAuth Web Client ID must be configured for the app's actual origin and redirect/popup use in Google Cloud Console. The client ID is not a client secret. Never put a Google client secret or service-account private key in the browser.
 
 ## Local development
 
-Use Node.js 22.5 or later. The local mode is intended only for development:
+Use Node.js 22.5 or later. For local development only:
 
 - `NODE_ENV=development`
 - `NAMELLO_AUTH_MODE=local`
 - `NAMELLO_SESSION_SECRET=<at least 32 random characters>`
 
-Do not enable local/demo auth in production. The service uses Node's built-in SQLite support, so ensure the deployed runtime supports `node:sqlite` and attach persistent storage if sync records must survive redeploys.
+The backend uses Node's built-in SQLite support. Attach persistent storage if sync records must survive redeploys.
 
-## Health check
+## Health check and verification
 
-`GET /healthz` returns the backend status and active authentication mode. A successful health check does not itself prove Google sign-in works; test the full sign-in flow from the deployed PWA.
+`GET /healthz` reports backend health and the active authentication mode. A successful health check does not prove sign-in works. Verify the full flow from the deployed PWA: create/sign in to a test account, confirm the Firebase ID token is accepted by `/v1/auth/firebase/verify`, and then test sync. Email/password accounts must verify their email before a backend session is issued.
