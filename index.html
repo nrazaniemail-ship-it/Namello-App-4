@@ -8738,7 +8738,7 @@ async function nmDriveAccessToken(clientId){ await nmLoadGoogleScript(); return 
 async function nmDriveUpload(pack,clientId){ const token=await nmDriveAccessToken(clientId); const boundary="namello_"+Math.random().toString(16).slice(2); const meta=JSON.stringify({name:"namello-secure-backup.json",parents:["appDataFolder"]}); const body=JSON.stringify(pack); const payload='--'+boundary+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+meta+'\r\n--'+boundary+'\r\nContent-Type: application/json\r\n\r\n'+body+'\r\n--'+boundary+'--'; const r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"multipart/related; boundary="+boundary},body:payload}); if(!r.ok) throw new Error("Google Drive: "+r.status); return await r.json(); }
 const NM_BACKEND_CFG_KEY = "namello_backend_config_v1";
 const NM_BACKEND_SESSION_KEY = "namello_backend_session_v1";
-function nmBackendCfg(){ return nmSecRead(NM_BACKEND_CFG_KEY,{baseUrl:"https://namello-backend-test.onrender.com"}); }
+function nmBackendCfg(){ const cfg=nmSecRead(NM_BACKEND_CFG_KEY,{baseUrl:"https://namello-backend-test.onrender.com"}); if(!cfg.baseUrl||/^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?$/i.test(String(cfg.baseUrl).trim())) cfg.baseUrl="https://namello-backend-test.onrender.com"; return cfg; }
 function nmBackendSession(){ try{return JSON.parse(sessionStorage.getItem(NM_BACKEND_SESSION_KEY)||"null");}catch(e){return null;} }
 function nmSaveBackendSession(v){ try{if(v)sessionStorage.setItem(NM_BACKEND_SESSION_KEY,JSON.stringify(v));else sessionStorage.removeItem(NM_BACKEND_SESSION_KEY);}catch(e){} }
 async function nmBackendRequest(path,options={}){
