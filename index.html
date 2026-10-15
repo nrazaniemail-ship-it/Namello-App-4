@@ -152,30 +152,7 @@ input[type="time"]::-webkit-calendar-picker-indicator { width: 18px; height: 18p
 [data-theme="light"] input[type="time"]::-webkit-calendar-picker-indicator { filter: brightness(.35) contrast(1.4); }
 .nm-journal-custom-mode .nm-custom-form-banner { position: sticky; top: 0; z-index: 3; }
 </style>
-<style id="name<div id="namello-auth-gate" role="dialog" aria-modal="true" aria-labelledby="na-heading">
- <div class="na-wrap">
-  <div class="na-brand"><span class="na-mark">N</span><span>Namello</span></div>
-  <section class="na-card">
-   <div class="na-top"><span id="na-mode-note">ورود امن به حساب</span><button class="na-link" id="na-switch" type="button">ایجاد حساب</button></div>
-   <h1 id="na-heading">ورود به ناملو</h1>
-   <p class="na-sub" id="na-subtitle">برای ادامه استفاده از برنامه، وارد حساب خود شوید.</p>
-   <form id="na-form">
-    <label for="na-email">ایمیل</label><input id="na-email" type="email" autocomplete="email" placeholder="name@example.com" required>
-    <label for="na-password">رمز عبور</label><input id="na-password" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ نویسه" required>
-    <button class="na-primary" id="na-submit" type="submit">ورود</button>
-   </form>
-   <div class="na-links" id="na-form-links"><button class="na-link" id="na-forgot" type="button">بازیابی رمز عبور</button><button class="na-link" id="na-resend" type="button">ارسال مجدد ایمیل تأیید</button></div>
-   <div class="na-divider" id="na-divider">یا ورود با</div>
-   <button class="na-google" id="na-google" type="button">ادامه با حساب Google</button>
-   <div class="na-account" id="na-account" role="status"></div>
-   <button class="na-secondary na-hidden" id="na-refresh-verify" type="button">بررسی تأیید ایمیل</button>
-   <button class="na-secondary na-hidden" id="na-signout" type="button">خروج از حساب</button>
-   <div class="na-notice" id="na-notice" role="status" aria-live="polite"></div>
-  </section>
-  <p class="na-foot">ورود با Firebase تأیید می‌شود و دسترسی به برنامه پس از تأیید نشست توسط سرور فعال خواهد شد.</p>
- </div>
-</div>
-llo-auth-gate-style">
+<style id="namello-auth-gate-style">
 #namello-auth-gate{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;overflow:auto;padding:20px;background:radial-gradient(ellipse at 12% 0%,#28234e 0,transparent 42%),radial-gradient(ellipse at 100% 100%,#142d4b 0,transparent 38%),#0b0e11;color:#f7f7ff;font-family:inherit;direction:rtl}
 #namello-auth-gate *{box-sizing:border-box}
 #namello-auth-gate .na-wrap{width:min(100%,440px)}
@@ -207,6 +184,29 @@ llo-auth-gate-style">
 </style>
 </head>
 <body>
+<div id="namello-auth-gate" role="dialog" aria-modal="true" aria-labelledby="na-heading">
+ <div class="na-wrap">
+  <div class="na-brand"><span class="na-mark">N</span><span>Namello</span></div>
+  <section class="na-card">
+   <div class="na-top"><span id="na-mode-note">ورود امن به حساب</span><button class="na-link" id="na-switch" type="button">ایجاد حساب</button></div>
+   <h1 id="na-heading">ورود به ناملو</h1>
+   <p class="na-sub" id="na-subtitle">برای ادامه استفاده از برنامه، وارد حساب خود شوید.</p>
+   <form id="na-form">
+    <label for="na-email">ایمیل</label><input id="na-email" type="email" autocomplete="email" placeholder="name@example.com" required>
+    <label for="na-password">رمز عبور</label><input id="na-password" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ نویسه" required>
+    <button class="na-primary" id="na-submit" type="submit">ورود</button>
+   </form>
+   <div class="na-links" id="na-form-links"><button class="na-link" id="na-forgot" type="button">بازیابی رمز عبور</button><button class="na-link" id="na-resend" type="button">ارسال مجدد ایمیل تأیید</button></div>
+   <div class="na-divider" id="na-divider">یا ورود با</div>
+   <button class="na-google" id="na-google" type="button">ادامه با حساب Google</button>
+   <div class="na-account" id="na-account" role="status"></div>
+   <button class="na-secondary na-hidden" id="na-refresh-verify" type="button">بررسی تأیید ایمیل</button>
+   <button class="na-secondary na-hidden" id="na-signout" type="button">خروج از حساب</button>
+   <div class="na-notice" id="na-notice" role="status" aria-live="polite"></div>
+  </section>
+  <p class="na-foot">ورود با Firebase تأیید می‌شود و دسترسی به برنامه پس از تأیید نشست توسط سرور فعال خواهد شد.</p>
+ </div>
+</div>
 <div id="boot-status">Loading Namello 1.0.5…</div>
 <div id="boot-error"></div>
 <div id="root"></div>
