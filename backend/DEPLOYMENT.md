@@ -47,3 +47,18 @@ The backend uses Node's built-in SQLite support. Attach persistent storage if sy
 ## Health check and verification
 
 `GET /healthz` reports backend health and the active authentication mode. A successful health check does not prove sign-in works. Verify the full flow from the deployed PWA: create/sign in to a test account, confirm the Firebase ID token is accepted by `/v1/auth/firebase/verify`, and then test sync. Email/password accounts must verify their email before a backend session is issued.
+
+## Integration branch test plan
+
+The `integration/firebase-auth-main-1.0.5` branch is an isolated validation branch. It is not the production `main` branch and does not automatically change the Render service, which currently tracks the separate Firebase feature branch.
+
+Before merging or changing the Render branch, verify:
+
+1. GitHub Actions completes the debug APK build for this integration branch.
+2. The PWA opens the Firebase sign-in gate and the Firebase Web SDK initializes without `auth/api-key-not-valid`.
+3. Email/password signup, email verification, login, Google login, and logout work with a test account.
+4. The Render backend accepts the resulting Firebase ID token at `/v1/auth/firebase/verify`.
+5. Backend session requests and encrypted sync upload/download work.
+6. A clean install of the generated APK is tested on an Android device.
+
+Do not merge this branch or repoint Render based only on a successful APK build; the real Firebase sign-in and sync tests are required.
