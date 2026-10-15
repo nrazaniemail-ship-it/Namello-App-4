@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - master
+      - integration/firebase-auth-main-1.0.5
 
 permissions:
   contents: read
