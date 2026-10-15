@@ -14,5 +14,6 @@ test('backend defines NODE_ENV before selecting the default authentication mode'
 
 test('production backend defaults to Google auth and rejects local/demo mode', () => {
   assert.match(server, /env\.NAMELLO_AUTH_MODE\s*\|\|\s*\(NODE_ENV === 'production' \? 'google' : 'local'\)/);
-  assert.match(server, /AUTH_MODE !== 'google' && NODE_ENV === 'production'/);
+  assert.match(server, /!\['local', 'google', 'firebase'\]\.includes\(AUTH_MODE\)/);
+  assert.match(server, /AUTH_MODE === 'local' && NODE_ENV === 'production'/);
 });
